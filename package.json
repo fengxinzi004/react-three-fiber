@@ -19,7 +19,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
+      "eslint --fix",
+      "format"
     ]
   },
   "scripts": {
@@ -42,7 +43,8 @@
     "analyze-fiber": "cd packages/fiber && npm publish --dry-run",
     "analyze-test": "cd packages/test-renderer && npm publish --dry-run",
     "format": "prettier --check .",
-    "format:fix": "prettier --write ."
+    "format:fix": "prettier --write .",
+    "check:local": "yarn typecheck && yarn eslint && yarn format && yarn test"
   },
   "devDependencies": {
     "@babel/core": "7.17.8",

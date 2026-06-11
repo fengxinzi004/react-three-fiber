@@ -1,0 +1,24 @@
+---
+description: React and hooks review rules
+alwaysApply: true
+---
+
+# React Review Rules
+
+When reviewing React code:
+
+- Check Hook dependency arrays.
+- Ensure effects have cleanup when they create subscriptions, timers, events, observers, or Web3D resources.
+- Avoid unnecessary rerenders.
+- Keep component responsibilities clear.
+- Avoid storing derived state unnecessarily.
+- Use refs carefully for mutable Three.js objects.
+- Avoid updating React state inside high-frequency render loops unless necessary.
+
+Flag these as review issues:
+
+- missing useEffect cleanup
+- stale closures
+- unstable dependencies
+- state updates inside frame loops
+- component doing too many responsibilities
