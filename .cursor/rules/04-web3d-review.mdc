@@ -1,0 +1,56 @@
+---
+description: Web3D and react-three-fiber review rules
+alwaysApply: true
+---
+
+# Web3D Review Rules
+
+When reviewing Web3D, Three.js, or react-three-fiber code:
+
+## Rendering Performance
+
+Check whether code creates objects inside render loops or `useFrame`.
+
+Avoid repeated per-frame creation of:
+
+- Vector3
+- Matrix4
+- Quaternion
+- Color
+- Box3
+- Raycaster
+- Geometry
+- Material
+- Texture
+
+Prefer object reuse, memoization, caching, instancing, and lazy updates.
+
+## Resource Lifecycle
+
+Check whether GPU resources are disposed when no longer used:
+
+- geometry.dispose()
+- material.dispose()
+- texture.dispose()
+- renderTarget.dispose()
+- controls.dispose()
+
+Check cleanup for:
+
+- event listeners
+- ResizeObserver
+- requestAnimationFrame
+- loaders
+- post-processing passes
+
+## Interaction
+
+Check:
+
+- camera and renderer resize synchronization
+- pointer / mouse / touch cleanup
+- drag and selection state consistency
+- raycast performance
+- fallback behavior when assets fail to load
+
+Flag issues only when they have practical impact.

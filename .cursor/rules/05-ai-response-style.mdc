@@ -1,0 +1,36 @@
+---
+description: AI response style for code review
+alwaysApply: true
+---
+
+# AI Response Style
+
+When reviewing code:
+
+- Be concise.
+- Focus on real risks.
+- Do not over-comment style-only issues.
+- Do not repeat what TypeScript, ESLint, or Prettier can already catch.
+- Prefer actionable suggestions.
+- If uncertain, mark it as "needs human confirmation".
+- For each issue, explain:
+  - what is wrong
+  - why it matters
+  - how to fix it
+
+Use this format:
+
+## Risk Level
+Low / Medium / High / Blocker
+
+## Key Findings
+- [Severity] File or area: issue, impact, suggestion
+
+## Web3D-Specific Risks
+- Rendering performance
+- Resource lifecycle
+- Interaction state
+- Asset loading
+
+## Testing Suggestions
+- Suggested tests

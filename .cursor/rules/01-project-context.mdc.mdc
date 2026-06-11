@@ -1,0 +1,29 @@
+---
+description: Project context for Web3D TypeScript repository
+alwaysApply: true
+---
+
+# Project Context
+
+This repository is a Web3D TypeScript project based on React and Three.js / react-three-fiber.
+
+When assisting with code generation, refactoring, debugging, or code review, prioritize:
+
+- TypeScript type safety
+- React component and Hook correctness
+- react-three-fiber lifecycle correctness
+- Three.js resource lifecycle management
+- Web3D rendering performance
+- Interaction and state consistency
+- Testability and maintainability
+
+Do not treat this as a generic frontend project.
+
+For Web3D-related changes, always consider:
+
+- render loop performance
+- object allocation in animation frames
+- geometry / material / texture disposal
+- controls / event listener cleanup
+- camera, renderer, and resize synchronization
+- asset loading and fallback behavior

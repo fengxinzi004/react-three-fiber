@@ -1,0 +1,25 @@
+---
+description: TypeScript review rules
+alwaysApply: true
+---
+
+# TypeScript Review Rules
+
+When reviewing or generating TypeScript code:
+
+- Avoid unnecessary `any`.
+- Prefer precise types over broad types.
+- Do not hide unsafe logic with type assertions.
+- Check null and undefined paths.
+- Keep public API types stable.
+- Avoid overly complex generic types unless necessary.
+- Ensure async errors are handled.
+- Prefer readable types over clever types.
+
+Flag these as review issues:
+
+- unsafe `as` casting
+- missing null checks
+- weak external input types
+- public API breaking changes
+- ignored Promise errors
