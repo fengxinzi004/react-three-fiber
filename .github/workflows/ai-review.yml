@@ -6,11 +6,11 @@ on:
 
 permissions:
   contents: read
-  pull-requests: read
+  pull-requests: write
 
 jobs:
   ai-review:
-    name: Generate AI Review Prompt
+    name: AI Review PR
     runs-on: ubuntu-latest
 
     steps:
@@ -30,5 +30,10 @@ jobs:
           git fetch origin ${{ github.base_ref }}
           git diff origin/${{ github.base_ref }}...HEAD > pr.diff
 
-      - name: Generate AI review prompt
+      - name: Run AI review and comment
         run: node scripts/ai-review-pr.mjs
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
