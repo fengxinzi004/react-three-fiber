@@ -3,12 +3,7 @@ import fs from 'node:fs'
 const diffPath = 'pr.diff'
 const rulesPath = '.github/ai-review-rules.md'
 
-const {
-  // OPENAI_API_KEY,
-  GITHUB_TOKEN,
-  GITHUB_REPOSITORY,
-  PR_NUMBER,
-} = process.env
+const { OPENAI_API_KEY, GITHUB_TOKEN, GITHUB_REPOSITORY, PR_NUMBER } = process.env
 
 function requireEnv(name, value) {
   if (!value) {
@@ -17,9 +12,7 @@ function requireEnv(name, value) {
   }
 }
 
-// requireEnv('OPENAI_API_KEY', OPENAI_API_KEY)
-// todoo： 后续建议改成环境变量方式获取 API_KEY，不要使用明文
-const OPENAI_API_KEY = 'sk-sp-JwVMToHPJqBFFxaURIJpuMPzKNSoEDEp'
+requireEnv('OPENAI_API_KEY', OPENAI_API_KEY)
 requireEnv('GITHUB_TOKEN', GITHUB_TOKEN)
 requireEnv('GITHUB_REPOSITORY', GITHUB_REPOSITORY)
 requireEnv('PR_NUMBER', PR_NUMBER)
@@ -76,8 +69,8 @@ Rules:
 - Do not comment on pure formatting unless it affects maintainability.
 `
 
-async function callOpenAI() {
-  const response = await fetch('https://aigw-gzgy2.cucloud.cn:8443/v1', {
+async function callAI() {
+  const response = await fetch('https://aigw-gzgy2.cucloud.cn:8443/v1/chat/completions', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${OPENAI_API_KEY}`,
@@ -85,27 +78,26 @@ async function callOpenAI() {
     },
     body: JSON.stringify({
       model: 'glm-5.1',
-      input: prompt,
+      messages: [
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
     }),
   })
 
   if (!response.ok) {
     const errorText = await response.text()
-    throw new Error(`OpenAI API failed: ${response.status} ${errorText}`)
+    throw new Error(`AI API failed: ${response.status} ${errorText}`)
   }
 
   const data = await response.json()
-
-  const outputText =
-    data.output_text ??
-    data.output
-      ?.flatMap((item) => item.content ?? [])
-      ?.filter((content) => content.type === 'output_text')
-      ?.map((content) => content.text)
-      ?.join('\n')
+  const outputText = data.choices?.[0]?.message?.content
 
   if (!outputText) {
-    throw new Error('OpenAI API returned empty output')
+    console.log(JSON.stringify(data, null, 2))
+    throw new Error('AI API returned empty output')
   }
 
   return outputText
@@ -133,7 +125,7 @@ async function postPrComment(body) {
 }
 
 try {
-  const review = await callOpenAI()
+  const review = await callAI()
 
   console.log('===== AI REVIEW RESULT START =====')
   console.log(review)
